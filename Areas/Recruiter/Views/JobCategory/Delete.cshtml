@@ -1,0 +1,60 @@
+﻿@model JobSeek.Models.JobCategory
+@{
+    ViewData["Title"] = "Delete";
+}
+<br />
+<h2 class="text-dark">Delete Job Category</h2>
+<form asp-action=Delete method="post">
+    <div class="p-4 rounded border">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="JobCategories"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="JobCategories" class="form-control">
+            </div>
+            <span asp-validation-for="JobCategories" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-danger delete" value="Delete" />
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </div>
+</form>
+
+<div style="display:none" id="dialog-confirm" title="Delete Job Category">
+    <p><span style="float:left;"></span><i class="fa-solid fa-triangle-exclamation"></i> Are you sure you want to delete Job Category?</p>
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync(partialViewName: "_ValidationScriptsPartial");}
+
+    <script language="javascript" type="text/javascript">
+
+    var currentForm;
+    $(function () {
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            modal: true,
+            autoOpen: false,
+            buttons: {
+                'Delete': function () {
+                    $(this).dialog('close');
+                    currentForm.submit();
+                },
+                'Cancel': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+        $(".delete").click(function () {
+            currentForm = $(this).closest('form');
+            $("#dialog-confirm").dialog('open');
+            return false;
+        });
+    });
+
+    </script>
+}

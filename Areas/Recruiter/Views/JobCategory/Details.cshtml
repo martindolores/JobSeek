@@ -1,0 +1,26 @@
+﻿@model JobSeek.Models.JobCategory
+@{
+    ViewData["Title"] = "Details";
+}
+<br />
+<h2 class="text-dark">Job Category Details</h2>
+<form asp-action=Edit method="post">
+    <div class="p-4 rounded border">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="JobCategories"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="JobCategories" class="form-control" readonly="readonly">
+            </div>
+            <span asp-validation-for="JobCategories" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </div>
+</form>
+

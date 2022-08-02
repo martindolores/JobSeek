@@ -1,0 +1,36 @@
+﻿@using JobSeek.Models;
+@model IEnumerable<JobCategory>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br />
+<br />
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-dark">Job Category List</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Create" class="btn btn-outline-dark"><i class="fa-solid fa-plus"></i>&nbsp; Job Category</a>
+    </div>
+</div>
+<br />
+<div>
+    <table class="table table-striped border">
+        <tr class="table-secondary">
+            <th>
+                @Html.DisplayNameFor(expression: c => c.JobCategories)
+            </th>
+            <th></th>
+            <th></th>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.JobCategories</td>
+                <td>
+                    <partial name="_JobCategoryButtonPartial" model="@item.Id" />
+                </td>
+            </tr>
+        }
+        </table>
+    </div>
