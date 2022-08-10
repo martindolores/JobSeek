@@ -16,5 +16,7 @@ namespace JobSeek.Data
 
         public DbSet<JobType> JobTypes { get; set; }
         public DbSet<JobCategory> JobCategories { get; set; }
+        public DbSet<JobOffer> JobOffer { get; set; }
+        public DbSet<RecruiterUser> RecruiterUser { get; set; }
     }
 }

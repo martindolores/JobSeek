@@ -1,0 +1,57 @@
+﻿@using JobSeek.Models;
+@model IEnumerable<JobOffer>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br />
+<br />
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-dark">Job Type List</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Create" class="btn btn-outline-dark"><i class="fa-solid fa-plus"></i>&nbsp; Job Product Type</a>
+    </div>
+</div>
+<br />
+<div>
+    <table class="table table-striped border">
+        <tr class="table-secondary">
+            <th>
+                @Html.DisplayNameFor(expression: c => c.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(expression: c => c.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(expression: c => c.JobTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(expression: c => c.JobCategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(expression: c => c.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(expression: c => c.Wage)
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            @foreach (var item in Model)
+            {
+<tr>
+            <td>@item.Title</td>
+            <td>@item.Author</td>
+            <td>@item.JobType.JobTypes</td>
+            <td>@item.JobCategory.JobCategories</td>
+            <td>@item.Description</td>
+            <td>@item.Wage</td>
+            <td>
+                <partial name="_JobOfferButtonPartial" model="@item.Id" />
+            </td>
+        </tr>
+        }
+        </table>
+    </div>

@@ -9,12 +9,16 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <style>
+        body {background-color: White;}
+    </style>
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-glasses"></i> JobSeek</a>
+                <a class="navbar-brand text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-glasses"></i> JobSeek</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,13 +27,16 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="Recruiter" asp-controller="JobType" asp-action="Index">Job Type</a>
+                            <a class="nav-link text-dark" asp-area="Recruiter" asp-controller="JobType" asp-action="Index">Job Type</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="Recruiter" asp-controller="JobCategory" asp-action="Index">Job Categories</a>
+                            <a class="nav-link text-dark" asp-area="Recruiter" asp-controller="JobCategory" asp-action="Index">Job Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Recruiter" asp-controller="JobOffer" asp-action="Index">Job Offers</a>
                         </li>
                     </ul>
                 </div>

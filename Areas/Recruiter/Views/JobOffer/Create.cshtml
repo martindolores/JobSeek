@@ -1,0 +1,118 @@
+﻿@model JobSeek.Models.JobOffer
+@{
+    ViewData["Title"] = "Create";
+}
+<br />
+<h2 class="text-dark">Add New Job Offer</h2>
+<form asp-action=Create enctype="multipart/form-data" method="post">
+    <div class="p-4 rounded border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Author"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Author" class="form-control">
+            </div>
+            <span asp-validation-for="Author" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="JobTypeId"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="JobTypeId" asp-items="ViewBag.jobTypeId" class="form-control"></select>
+            </div>
+            <span asp-validation-for="JobTypeId" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="JobCategoryId"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="JobCategoryId" asp-items="ViewBag.jobCategoryId" class="form-control"></select>
+            </div>
+            <span asp-validation-for="JobCategoryId" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Title"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Title" class="form-control">
+            </div>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Description"></label>
+            </div>
+            <div class="col-5">
+                <textarea asp-for="Description" class="form-control" rows="5" cols="10"></textarea>
+            </div>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Wage"></label>
+            </div>
+            <div class="col-5">
+                <i class="fa-solid fa-dollar-sign" style="position: absolute; top: 11.5px; left: 20px; font-weight: bold; font-style: normal; "></i>
+                <input asp-for="Wage" style="padding-left: 20px;" class="form-control">
+            </div>
+            <span asp-validation-for="Wage" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="PostalCode"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="PostalCode" class="form-control">
+            </div>
+            <span asp-validation-for="PostalCode" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Submitted"></label>
+            </div>
+            <div class="col-5">
+                <input class="form-control" value="@ViewBag.DateNow" readonly="readonly">
+            </div>
+            <span asp-validation-for="Submitted" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Save" />
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync(partialViewName: "_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(function(){
+            var exist = '@TempData["exist"]'
+            if (exist != "") {
+                // Extend existing 'alert' dialog
+                if (!alertify.errorAlert) {
+                    //define a new errorAlert base on alert
+                    alertify.dialog('errorAlert', function factory() {
+                        return {
+                            build: function () {
+                                var errorHeader = '<span class="fa fa-times-circle fa-2x" '
+                                    + 'style="vertical-align:middle;color:#e10000;">'
+                                    + '</span> Error';
+                                this.setHeader(errorHeader);
+                            }
+                        };
+                    }, true, 'alert');
+                }
+                //launch it.
+                // since this was transient, we can launch another instance at the same time.
+                alertify
+                    .errorAlert(exist + "<br/><br/><br/>");
+            }
+        })
+    </script>
+}
