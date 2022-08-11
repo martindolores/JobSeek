@@ -7,11 +7,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace JobSeek.Models
 {
-    public class RecruiterUser : IdentityUser
+    public class JobseekerUser : IdentityUser
     {
-        [Required]
-        [Display(Name = "Company")]
-        public string CompanyName { get; set; }
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
