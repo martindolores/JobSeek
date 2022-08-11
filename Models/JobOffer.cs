@@ -29,6 +29,8 @@ namespace JobSeek.Models
         [Required]
         [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]

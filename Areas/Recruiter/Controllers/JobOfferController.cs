@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using JobSeek.Data;
 using JobSeek.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace JobSeek.Areas.Recruiter.Controllers
 {
@@ -15,10 +19,14 @@ namespace JobSeek.Areas.Recruiter.Controllers
     public class JobOfferController : Controller
     {
         ApplicationDbContext _db;
+        UserManager<IdentityUser> _userManager;
+        SignInManager<IdentityUser> _signInManager;
 
-        public JobOfferController(ApplicationDbContext db)
+        public JobOfferController(ApplicationDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _db = db;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         public IActionResult Index()
         {
@@ -27,10 +35,22 @@ namespace JobSeek.Areas.Recruiter.Controllers
         }
 
         //GET Create Action Method
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ViewData["jobTypeId"] = new SelectList(_db.JobTypes.ToList(), "Id", "JobTypes");
             ViewData["jobCategoryId"] = new SelectList(_db.JobCategories.ToList(), "Id", "JobCategories");
+            //var userId = _userManager.GetUserId(HttpContext.User);
+            //RecruiterUser user = _userManager.FindByIdAsync(userId).Result;
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            List<RecruiterUser> recruiters = _db.RecruiterUser.ToList();
+            foreach (var recruiter in recruiters)
+            {
+                if (recruiter.Id == userId)
+                {
+                    ViewBag.Company = recruiter.CompanyName;
+                }
+            }
             ViewBag.DateNow = DateTime.Now.ToString("dd/MM/yyyy");
             return View();
         }
@@ -40,6 +60,15 @@ namespace JobSeek.Areas.Recruiter.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JobOffer jobOffer)
         {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            List<RecruiterUser> recruiters = _db.RecruiterUser.ToList();
+            foreach (var recruiter in recruiters)
+            {
+                if (recruiter.Id == userId)
+                {
+                    jobOffer.CompanyName = recruiter.CompanyName;
+                }
+            }
             if (ModelState.IsValid)
             {
                 var searchOffer = _db.JobOffer.FirstOrDefault(c => c.Title == jobOffer.Title);
@@ -63,6 +92,15 @@ namespace JobSeek.Areas.Recruiter.Controllers
         //GET Edit Action Method
         public IActionResult Edit(int? id)
         {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            List<RecruiterUser> recruiters = _db.RecruiterUser.ToList();
+            foreach (var recruiter in recruiters)
+            {
+                if (recruiter.Id == userId)
+                {
+                    ViewBag.Company = recruiter.CompanyName;
+                }
+            }
             var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory)
                 .FirstOrDefault(c => c.Id == id);            
             ViewData["jobTypeId"] = new SelectList(_db.JobTypes.ToList(), "Id", "JobTypes");
@@ -81,6 +119,15 @@ namespace JobSeek.Areas.Recruiter.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(JobOffer jobOffer)
         {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            List<RecruiterUser> recruiters = _db.RecruiterUser.ToList();
+            foreach (var recruiter in recruiters)
+            {
+                if (recruiter.Id == userId)
+                {
+                    jobOffer.CompanyName = recruiter.CompanyName;
+                }
+            }
             if (ModelState.IsValid)
             {
                 string date = DateTime.Now.ToString("dd/MM/yyyy");

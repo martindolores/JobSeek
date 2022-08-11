@@ -10,6 +10,8 @@
     <Compile Remove="Data\Migrations\20220801050410_JobTypeTable.Designer.cs" />
     <Compile Remove="Data\Migrations\20220802070318_JobOfferTable.cs" />
     <Compile Remove="Data\Migrations\20220802070318_JobOfferTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220811024353_test.cs" />
+    <Compile Remove="Data\Migrations\20220811024353_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
