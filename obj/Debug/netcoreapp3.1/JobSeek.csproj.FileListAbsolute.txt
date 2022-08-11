@@ -228,3 +228,10 @@ D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Jobseeker\Views\Home\Sea
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_SearchButtonPartial.cshtml.g.cs
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Jobseeker\Views\Home\Details.cshtml.g.cs
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Recruiter\Views\User\Create.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Role\Index.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ButtonRolePartial.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\_ViewImports.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\_ViewStart.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Role\Create.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Role\Edit.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Role\Delete.cshtml.g.cs

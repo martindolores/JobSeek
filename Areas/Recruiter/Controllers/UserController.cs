@@ -27,6 +27,11 @@ namespace JobSeek.Areas.Recruiter.Controllers
             return View();
         }
 
+
+        //
+        // NEED TO FINISH ROLE CONTROLLER AND VIEWS FIRST   
+        //
+
         //POST Create Action Method
         [HttpPost]
         [ValidateAntiForgeryToken]
