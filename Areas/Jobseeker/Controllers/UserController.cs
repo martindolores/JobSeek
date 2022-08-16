@@ -38,6 +38,7 @@ namespace JobSeek.Areas.Jobseeker.Controllers
                     jobseeker.Email = jobseeker.UserName;
                     jobseeker.NormalizedEmail = jobseeker.Email.ToUpper();
                     jobseeker.EmailConfirmed = true;
+                    jobseeker.PhoneNumberConfirmed = true;
                     var result = await _userManager.CreateAsync(jobseeker, jobseeker.PasswordHash);
                     if (result.Succeeded)
                     {

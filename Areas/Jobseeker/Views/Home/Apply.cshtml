@@ -1,0 +1,43 @@
+﻿@model JobSeek.Models.JobOffer
+@{
+    ViewData["Title"] = "Apply";
+}
+
+<form asp-action=Edit enctype="multipart/form-data" method="post">
+    <div class="p-4 rounded border">
+        <h6 style="font-weight:300">Applying For</h6>
+        <h1 class="display-4">@Model.Title</h1>
+        <h4>@Model.CompanyName</h4>
+        <h6>@ViewBag.JobType (@ViewBag.JobCat)</h6>
+        <h6><i class="fa-solid fa-dollar-sign"></i>@Model.Wage</h6>
+        <br />
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="p-4 rounded border bg-secondary text-white">
+                        @ViewBag.FirstName @ViewBag.LastName
+                        <br />
+                        @ViewBag.PhoneNumber
+                        <br />
+                        @ViewBag.Email
+                    </div>
+                    <div class="p-4 rounded border">
+                        <h6>Resume</h6>
+                        <input class="btn btn-outline-secondary" type="submit" value="Upload a Resume" />
+                        <p>Accepted file types: .doc, .docx, .pdf, .txt and .rtf (2MB limit).</p>
+                    </div>
+                    <div class="p-4 rounded border">
+                        <h6>Cover Letter</h6>
+                        <input class="btn btn-outline-secondary" type="submit" value="Upload a Cover Letter" />
+                        <p>Accepted file types: .doc, .docx, .pdf, .txt and .rtf (2MB limit).</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <h6>Job Description</h6>
+                    <hr />
+                    @Model.Description
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -37,7 +37,8 @@ namespace JobSeek.Models
         public string Description { get; set; }
         [Required]
         public decimal Wage { get; set; }
-       
+        [Required]
+        public string RecruiterId { get; set; }
         
 
 

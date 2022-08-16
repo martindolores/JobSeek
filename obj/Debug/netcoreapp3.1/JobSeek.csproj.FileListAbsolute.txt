@@ -236,3 +236,4 @@ D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Role\Create.
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Role\Edit.cshtml.g.cs
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Role\Delete.cshtml.g.cs
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Jobseeker\Views\User\Create.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Jobseeker\Views\Home\Apply.cshtml.g.cs

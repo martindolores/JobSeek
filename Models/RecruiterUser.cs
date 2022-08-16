@@ -19,6 +19,5 @@ namespace JobSeek.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-
     }
 }

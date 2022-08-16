@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JobSeek.Data;
 using JobSeek.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,17 +16,29 @@ namespace JobSeek.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _db = db;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var jobOffers = _db.JobOffer.ToList();
             ViewBag.JobTypes = _db.JobTypes.ToList();
             ViewBag.JobCategory = _db.JobCategories.ToList();
+            ViewBag.JobCount = jobOffers.Count();
+            var userId = _userManager.GetUserId(HttpContext.User);
+            if (userId != null)
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                var role = await _userManager.GetRolesAsync(user);
+                ViewBag.Role = role[0];
+                return View();
+            }
             return View();
         }
 
@@ -98,10 +111,51 @@ namespace JobSeek.Controllers
         
 
         //GET Details Action Method
-        public IActionResult Details()
+        public IActionResult Details(int? id)
         {
-            return View();
+            var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory)
+                .FirstOrDefault(c => c.Id == id);
+            var submissionDate = jobOffer.Submitted.ToString("dd/MM/yyyy");
+            ViewBag.JobCat = jobOffer.JobCategory.JobCategories;
+            ViewBag.JobType = jobOffer.JobType.JobTypes;
+            ViewBag.subDate = submissionDate;
+            if (id == null || jobOffer == null)
+            {
+                return NotFound();
+            }
+            return View(jobOffer);
         }
+
+        //GET Apply Action Method
+        public async Task<IActionResult> Apply(int? id)
+        {
+            var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory)
+                .FirstOrDefault(c => c.Id == id);
+            var userId = _userManager.GetUserId(HttpContext.User);
+            List<JobseekerUser> jobseekers = _db.JobseekerUser.ToList();
+            
+            if (userId != null)
+            {
+                foreach (var jobseeker in jobseekers)
+                {
+                    if (jobseeker.Id == userId)
+                    {
+                        ViewBag.FirstName = jobseeker.FirstName;
+                        ViewBag.LastName = jobseeker.LastName;
+                        ViewBag.Email = jobseeker.Email;
+                        ViewBag.PhoneNumber = jobseeker.PhoneNumber;
+                    }
+                }
+            }
+            ViewBag.JobCat = jobOffer.JobCategory.JobCategories;
+            ViewBag.JobType = jobOffer.JobType.JobTypes;
+            if (id == null || jobOffer == null)
+            {
+                return NotFound();
+            }
+            return View(jobOffer);
+        }
+
     }
 }
 

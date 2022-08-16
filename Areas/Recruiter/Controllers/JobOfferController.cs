@@ -30,8 +30,10 @@ namespace JobSeek.Areas.Recruiter.Controllers
         }
         public IActionResult Index()
         {
-           var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory).ToList();
-           return View(jobOffer);
+            var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory).ToList();
+            var userId = _userManager.GetUserId(HttpContext.User);
+            ViewBag.UserId = userId;
+            return View(jobOffer);
         }
 
         //GET Create Action Method
@@ -48,6 +50,7 @@ namespace JobSeek.Areas.Recruiter.Controllers
             {
                 if (recruiter.Id == userId)
                 {
+                    ViewBag.RecruiterId = recruiter.Id;
                     ViewBag.Company = recruiter.CompanyName;
                 }
             }
@@ -71,16 +74,7 @@ namespace JobSeek.Areas.Recruiter.Controllers
             }
             if (ModelState.IsValid)
             {
-                var searchOffer = _db.JobOffer.FirstOrDefault(c => c.Title == jobOffer.Title);
-                if (searchOffer != null)
-                {
-                    TempData["exist"] = "This Job Offer already exists.";
-                    ViewBag.Message = "This Job Offer already exists.";
-                    ViewData["jobTypeId"] = new SelectList(_db.JobTypes.ToList(), "Id", "JobTypes");
-                    ViewData["jobCategoryId"] = new SelectList(_db.JobCategories.ToList(), "Id", "JobCategories");
-                    return View(jobOffer);
-                }
-                var date = DateTime.Now.ToString("dd/MM/yyyy"); 
+                var date = DateTime.Now.ToString("dd/MM/yyyy");
                 jobOffer.Submitted = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 _db.JobOffer.Add(jobOffer);
                 await _db.SaveChangesAsync();
@@ -98,11 +92,12 @@ namespace JobSeek.Areas.Recruiter.Controllers
             {
                 if (recruiter.Id == userId)
                 {
+                    ViewBag.RecruiterId = recruiter.Id;
                     ViewBag.Company = recruiter.CompanyName;
                 }
             }
             var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory)
-                .FirstOrDefault(c => c.Id == id);            
+                .FirstOrDefault(c => c.Id == id);
             ViewData["jobTypeId"] = new SelectList(_db.JobTypes.ToList(), "Id", "JobTypes");
             ViewData["jobCategoryId"] = new SelectList(_db.JobCategories.ToList(), "Id", "JobCategories");
             string date = DateTime.Now.ToString("dd/MM/yyyy");
