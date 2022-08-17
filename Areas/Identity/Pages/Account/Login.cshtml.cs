@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace JobSeek.Areas.Identity.Pages.Account
 {
@@ -82,6 +83,16 @@ namespace JobSeek.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    var userId =user.Id;
+                    if (userId != null)
+                    {
+                        var role = await _userManager.GetRolesAsync(user);
+                        if (role != null)
+                        {
+                            HttpContext.Session.SetString(key: "roleName", value: role[0]);
+                        }
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

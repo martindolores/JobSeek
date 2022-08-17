@@ -30,20 +30,12 @@ namespace JobSeek.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var jobOffers = _db.JobOffer.ToList();
             ViewBag.JobTypes = _db.JobTypes.ToList();
             ViewBag.JobCategory = _db.JobCategories.ToList();
             ViewBag.JobCount = jobOffers.Count();
-            var userId = _userManager.GetUserId(HttpContext.User);
-            if (userId != null)
-            {
-                var user = await _userManager.FindByIdAsync(userId);
-                var role = await _userManager.GetRolesAsync(user);
-                ViewBag.Role = role[0];
-                return View();
-            }
             return View();
         }
 
@@ -242,7 +234,8 @@ namespace JobSeek.Controllers
         //METHODS
         private async Task<string> UploadFile(string folderPath, IFormFile file)
         {
-            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folderPath, Path.GetFileName(file.FileName));
+            folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
+            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
             using (FileStream fs = new FileStream(serverFolder, FileMode.Create))
             {
                 await file.CopyToAsync(fs);
@@ -250,7 +243,7 @@ namespace JobSeek.Controllers
             }
                 
             GC.Collect();
-            return folderPath + file.FileName;
+            return folderPath;
         }
 
         private int RandomUniqueNumber()

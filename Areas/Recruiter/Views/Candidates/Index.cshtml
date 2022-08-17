@@ -1,0 +1,51 @@
+﻿@using JobSeek.Models;
+@model IEnumerable<Application>
+@{
+    ViewData["Title"] = "Candidates";
+}
+
+<br />
+<br />
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-dark">Candidates</h2>
+    </div>
+</div>
+<br />
+<div>
+    <table class="table table-striped border">
+        <tr class="table-secondary">
+            <th>
+                @Html.DisplayNameFor(expression: c => c.JobOfferId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(expression: c => c.JobseekerId)
+            </th>
+            <th>
+                Email
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            @foreach (var application in Model)
+            {
+                @foreach (var job in ViewBag.jobOffers)
+                {
+                    @foreach (var candidate in ViewBag.JobSeekers)
+                    {
+                        @if (application.JobOfferId == job.Id && application.JobseekerId == candidate.Id)
+                        {
+                        <tr>
+                            <td>@job.Title</td>
+                            <td>@candidate.FirstName @candidate.LastName</td>
+                            <td>@candidate.UserName</td>
+                            <td>
+                                <partial name="_JobOfferButtonPartial" model="@application.Id" />
+                            </td>
+                        </tr>
+                    }
+                    }
+                }
+            }
+        </table>
+    </div>
