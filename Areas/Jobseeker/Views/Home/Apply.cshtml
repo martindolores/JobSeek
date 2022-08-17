@@ -1,15 +1,17 @@
-﻿@model JobSeek.Models.JobOffer
+﻿@model JobSeek.Models.Application
 @{
     ViewData["Title"] = "Apply";
 }
 
-<form asp-action=Edit enctype="multipart/form-data" method="post">
+<form asp-action=Apply enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="JobseekerId" value="@ViewBag.JobseekerId" />
+    <input type="hidden" asp-for="JobOfferId" value="@ViewBag.JobOfferId" />
     <div class="p-4 rounded border">
         <h6 style="font-weight:300">Applying For</h6>
-        <h1 class="display-4">@Model.Title</h1>
-        <h4>@Model.CompanyName</h4>
+        <h1 class="display-4">@ViewBag.TitleName</h1>
+        <h4>@ViewBag.Company</h4>
         <h6>@ViewBag.JobType (@ViewBag.JobCat)</h6>
-        <h6><i class="fa-solid fa-dollar-sign"></i>@Model.Wage</h6>
+        <h6><i class="fa-solid fa-dollar-sign"></i>@ViewBag.Wage</h6>
         <br />
         <div class="container">
             <div class="row">
@@ -23,21 +25,136 @@
                     </div>
                     <div class="p-4 rounded border">
                         <h6>Resume</h6>
-                        <input class="btn btn-outline-secondary" type="submit" value="Upload a Resume" />
-                        <p>Accepted file types: .doc, .docx, .pdf, .txt and .rtf (2MB limit).</p>
+                        <input id="resumeFileId" type="file" asp-for="Resume" hidden />
+                        <input id="resumeButton" class="btn btn-outline-secondary" type="button" value="Upload a Resume" />
+                        <input id="resumeFileName" class="btn btn-light" placeholder="No File Selected" disabled>
+                        <p>Accepted file types: .doc, .docx, .pdf, and .txt (2MB limit).</p>
                     </div>
                     <div class="p-4 rounded border">
                         <h6>Cover Letter</h6>
-                        <input class="btn btn-outline-secondary" type="submit" value="Upload a Cover Letter" />
-                        <p>Accepted file types: .doc, .docx, .pdf, .txt and .rtf (2MB limit).</p>
+                        <input id="coverLetterFileId" type="file" asp-for="CoverLetter" hidden />
+                        <input id="coverLetterButton" class="btn btn-outline-secondary" type="button" value="Upload a Cover Letter" />
+                        <input id="coverLetterFileName" class="btn btn-light" placeholder="No File Selected" disabled>
+                        <p>Accepted file types: .doc, .docx, .pdf, and .txt (2MB limit).</p>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Submit">
                     </div>
                 </div>
                 <div class="col">
                     <h6>Job Description</h6>
                     <hr />
-                    @Model.Description
+                    @ViewBag.Description
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync(partialViewName: "_ValidationScriptsPartial");}
+
+    <script language="javascript" type="text/javascript">
+
+        document.getElementById('coverLetterButton').addEventListener('click', openDialog);
+
+        function openDialog() {
+            document.getElementById('coverLetterFileId').click();
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+
+        document.getElementById('resumeButton').addEventListener('click', openDialog);
+
+        function openDialog() {
+            document.getElementById('resumeFileId').click();
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        document.getElementById("resumeFileId").onchange = function () {
+            document.getElementById("resumeFileName").value = this.files[0].name;
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        document.getElementById("coverLetterFileId").onchange = function () {
+            document.getElementById("coverLetterFileName").value = this.files[0].name;
+        }
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            var resume = '@TempData["resume"]'
+            if (resume != "") {
+                // Extend existing 'alert' dialog
+                if (!alertify.errorAlert) {
+                    //define a new errorAlert base on alert
+                    alertify.dialog('errorAlert', function factory() {
+                        return {
+                            build: function () {
+                                var errorHeader = '<span class="fa fa-times-circle fa-2x" '
+                                    + 'style="vertical-align:middle;color:#e10000;">'
+                                    + '</span> Error';
+                                this.setHeader(errorHeader);
+                            }
+                        };
+                    }, true, 'alert');
+                }
+                //launch it.
+                // since this was transient, we can launch another instance at the same time.
+                alertify
+                    .errorAlert(resume + "<br/><br/><br/>");
+            }
+        })
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            var coverLetter = '@TempData["coverLetter"]'
+            if (coverLetter != "") {
+                // Extend existing 'alert' dialog
+                if (!alertify.errorAlert) {
+                    //define a new errorAlert base on alert
+                    alertify.dialog('errorAlert', function factory() {
+                        return {
+                            build: function () {
+                                var errorHeader = '<span class="fa fa-times-circle fa-2x" '
+                                    + 'style="vertical-align:middle;color:#e10000;">'
+                                    + '</span> Error';
+                                this.setHeader(errorHeader);
+                            }
+                        };
+                    }, true, 'alert');
+                }
+                //launch it.
+                // since this was transient, we can launch another instance at the same time.
+                alertify
+                    .errorAlert(coverLetter + "<br/><br/><br/>");
+            }
+        })
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            var required = '@TempData["required"]'
+            if (required != "") {
+                // Extend existing 'alert' dialog
+                if (!alertify.errorAlert) {
+                    //define a new errorAlert base on alert
+                    alertify.dialog('errorAlert', function factory() {
+                        return {
+                            build: function () {
+                                var errorHeader = '<span class="fa fa-times-circle fa-2x" '
+                                    + 'style="vertical-align:middle;color:#e10000;">'
+                                    + '</span> Error';
+                                this.setHeader(errorHeader);
+                            }
+                        };
+                    }, true, 'alert');
+                }
+                //launch it.
+                // since this was transient, we can launch another instance at the same time.
+                alertify
+                    .errorAlert(required + "<br/><br/><br/>");
+            }
+        })
+    </script>
+}
+
+    

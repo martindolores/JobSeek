@@ -4,7 +4,7 @@
 }
 
 <h2 class="text-dark">Job Description</h2>
-<form asp-action=Apply enctype="multipart/form-data" method="post">
+<form asp-action=Details enctype="multipart/form-data" method="post">
     <div class="p-4 rounded border">
         <input type="hidden" name="id" value="@Model.Id" />
         <h1 class="display-4">@Model.Title</h1>
@@ -14,7 +14,7 @@
         <br />
         <h6 style="font-weight:300">Posted: @ViewBag.subDate</h6>
         <div class="form-group">
-            <input type="submit" class="btn btn-primary edit" value="Apply" />
+            <a type="button" asp-action="Apply" asp-route-id="@Model.Id" class="btn btn-primary">Apply</a>
         </div>
         <br />
         <hr />

@@ -12,6 +12,10 @@
     <Compile Remove="Data\Migrations\20220802070318_JobOfferTable.Designer.cs" />
     <Compile Remove="Data\Migrations\20220811024353_test.cs" />
     <Compile Remove="Data\Migrations\20220811024353_test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220817015717_ApplicationTableUpdate.cs" />
+    <Compile Remove="Data\Migrations\20220817015717_ApplicationTableUpdate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220817022452_ForeignKeys.cs" />
+    <Compile Remove="Data\Migrations\20220817022452_ForeignKeys.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

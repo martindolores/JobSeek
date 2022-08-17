@@ -19,6 +19,31 @@ namespace JobSeek.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("JobSeek.Models.Application", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CoverLetter")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("JobOfferId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JobseekerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Resume")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Application");
+                });
+
             modelBuilder.Entity("JobSeek.Models.JobCategory", b =>
                 {
                     b.Property<int>("Id")

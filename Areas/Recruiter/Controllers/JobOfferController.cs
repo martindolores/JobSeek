@@ -37,7 +37,7 @@ namespace JobSeek.Areas.Recruiter.Controllers
         }
 
         //GET Create Action Method
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             ViewData["jobTypeId"] = new SelectList(_db.JobTypes.ToList(), "Id", "JobTypes");
             ViewData["jobCategoryId"] = new SelectList(_db.JobCategories.ToList(), "Id", "JobCategories");
