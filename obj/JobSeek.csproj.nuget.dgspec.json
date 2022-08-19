@@ -44,6 +44,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "Aspose.Words": {
+              "target": "Package",
+              "version": "[22.8.0, )"
+            },
             "FontAwesome": {
               "target": "Package",
               "version": "[4.7.0, )"

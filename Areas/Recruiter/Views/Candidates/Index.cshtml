@@ -27,25 +27,18 @@
             <th></th>
             <th></th>
             <th></th>
+
             @foreach (var application in Model)
             {
-                @foreach (var job in ViewBag.jobOffers)
-                {
-                    @foreach (var candidate in ViewBag.JobSeekers)
-                    {
-                        @if (application.JobOfferId == job.Id && application.JobseekerId == candidate.Id)
-                        {
-                        <tr>
-                            <td>@job.Title</td>
-                            <td>@candidate.FirstName @candidate.LastName</td>
-                            <td>@candidate.UserName</td>
-                            <td>
-                                <partial name="_JobOfferButtonPartial" model="@application.Id" />
-                            </td>
-                        </tr>
-                    }
-                    }
-                }
-            }
+            <tr>
+                <td>@application.JobOffer.Title</td>
+                <td>@application.Jobseeker.FirstName @application.Jobseeker.LastName</td>
+                <td>@application.Jobseeker.UserName</td>
+                <td></td>
+                <td>
+                    <partial name="_ApplicationPartial" model="@application.Id" />
+                </td>
+            </tr>
+        }
         </table>
-    </div>
+</div>

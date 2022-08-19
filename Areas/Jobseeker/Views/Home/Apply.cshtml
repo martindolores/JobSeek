@@ -1,50 +1,59 @@
 ﻿@model JobSeek.Models.Application
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString(key: "roleName");
+}
 @{
     ViewData["Title"] = "Apply";
 }
 
 <form asp-action=Apply enctype="multipart/form-data" method="post">
-    <input type="hidden" asp-for="JobseekerId" value="@ViewBag.JobseekerId" />
-    <input type="hidden" asp-for="JobOfferId" value="@ViewBag.JobOfferId" />
+    <input type="hidden" asp-for="@Model.JobseekerId" value="@Model.JobseekerId" />
+    <input type="hidden" asp-for="@Model.RecruiterId" value="@Model.RecruiterId" />
+    <input type="hidden" asp-for="@Model.JobOfferId" value="@Model.JobOfferId" />
     <div class="p-4 rounded border">
         <h6 style="font-weight:300">Applying For</h6>
-        <h1 class="display-4">@ViewBag.TitleName</h1>
-        <h4>@ViewBag.Company</h4>
-        <h6>@ViewBag.JobType (@ViewBag.JobCat)</h6>
-        <h6><i class="fa-solid fa-dollar-sign"></i>@ViewBag.Wage</h6>
+        <h1 class="display-4">@Model.JobOffer.Title</h1>
+        <h4>@Model.JobOffer.CompanyName</h4>
+        <h6>@Model.JobOffer.JobType.JobTypes (@Model.JobOffer.JobCategory.JobCategories)</h6>
+        <h6><i class="fa-solid fa-dollar-sign"></i>@Model.JobOffer.Wage</h6>
         <br />
         <div class="container">
             <div class="row">
-                <div class="col">
-                    <div class="p-4 rounded border bg-secondary text-white">
-                        @ViewBag.FirstName @ViewBag.LastName
-                        <br />
-                        @ViewBag.PhoneNumber
-                        <br />
-                        @ViewBag.Email
+                @if (userRole == "Jobseeker")
+                {
+                    <div class="col">
+                        <div class="p-4 rounded border bg-secondary text-white">
+                            @Model.Jobseeker.FirstName @Model.Jobseeker.LastName
+                            <br />
+                            @Model.Jobseeker.PhoneNumber
+                            <br />
+                            @Model.Jobseeker.Email
+                        </div>
+                        <div class="p-4 rounded border">
+                            <h6>Resume</h6>
+                            <input id="resumeFileId" type="file" asp-for="Resume" name="resume" hidden />
+                            <input id="resumeButton" class="btn btn-outline-secondary" type="button" value="Upload a Resume" />
+                            <input id="resumeFileName" class="btn btn-light" placeholder="No File Selected" disabled>
+                            <p>Accepted file types: .doc, .docx, .pdf, and .txt (2MB limit).</p>
+                        </div>
+                        <div class="p-4 rounded border">
+                            <h6>Cover Letter</h6>
+                            <input id="coverLetterFileId" type="file" asp-for="CoverLetter" name="coverLetter" hidden />
+                            <input id="coverLetterButton" class="btn btn-outline-secondary" type="button" value="Upload a Cover Letter" />
+                            <input id="coverLetterFileName" class="btn btn-light" placeholder="No File Selected" disabled>
+                            <p>Accepted file types: .doc, .docx, .pdf, and .txt (2MB limit).</p>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
                     </div>
-                    <div class="p-4 rounded border">
-                        <h6>Resume</h6>
-                        <input id="resumeFileId" type="file" asp-for="Resume" hidden />
-                        <input id="resumeButton" class="btn btn-outline-secondary" type="button" value="Upload a Resume" />
-                        <input id="resumeFileName" class="btn btn-light" placeholder="No File Selected" disabled>
-                        <p>Accepted file types: .doc, .docx, .pdf, and .txt (2MB limit).</p>
-                    </div>
-                    <div class="p-4 rounded border">
-                        <h6>Cover Letter</h6>
-                        <input id="coverLetterFileId" type="file" asp-for="CoverLetter" hidden />
-                        <input id="coverLetterButton" class="btn btn-outline-secondary" type="button" value="Upload a Cover Letter" />
-                        <input id="coverLetterFileName" class="btn btn-light" placeholder="No File Selected" disabled>
-                        <p>Accepted file types: .doc, .docx, .pdf, and .txt (2MB limit).</p>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                    </div>
-                </div>
+                }
                 <div class="col">
                     <h6>Job Description</h6>
                     <hr />
-                    @ViewBag.Description
+                    @Model.JobOffer.Description
                 </div>
             </div>
         </div>
@@ -155,6 +164,56 @@
             }
         })
     </script>
+    <script type="text/javascript">
+        $(function(){
+            var resumeSize = '@TempData["resumeSize"]'
+            if (resumeSize != "") {
+                // Extend existing 'alert' dialog
+                if (!alertify.errorAlert) {
+                    //define a new errorAlert base on alert
+                    alertify.dialog('errorAlert', function factory() {
+                        return {
+                            build: function () {
+                                var errorHeader = '<span class="fa fa-times-circle fa-2x" '
+                                    + 'style="vertical-align:middle;color:#e10000;">'
+                                    + '</span> Error';
+                                this.setHeader(errorHeader);
+                            }
+                        };
+                    }, true, 'alert');
+                }
+                //launch it.
+                // since this was transient, we can launch another instance at the same time.
+                alertify
+                    .errorAlert(resumeSize + "<br/><br/><br/>");
+            }
+        })
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            var coverLetterSize = '@TempData["coverLetterSize"]'
+            if (coverLetterSize != "") {
+                // Extend existing 'alert' dialog
+                if (!alertify.errorAlert) {
+                    //define a new errorAlert base on alert
+                    alertify.dialog('errorAlert', function factory() {
+                        return {
+                            build: function () {
+                                var errorHeader = '<span class="fa fa-times-circle fa-2x" '
+                                    + 'style="vertical-align:middle;color:#e10000;">'
+                                    + '</span> Error';
+                                this.setHeader(errorHeader);
+                            }
+                        };
+                    }, true, 'alert');
+                }
+                //launch it.
+                // since this was transient, we can launch another instance at the same time.
+                alertify
+                    .errorAlert(coverLetterSize + "<br/><br/><br/>");
+            }
+        })
+    </script>
 }
 
-    
+

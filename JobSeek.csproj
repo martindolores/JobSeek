@@ -16,9 +16,14 @@
     <Compile Remove="Data\Migrations\20220817015717_ApplicationTableUpdate.Designer.cs" />
     <Compile Remove="Data\Migrations\20220817022452_ForeignKeys.cs" />
     <Compile Remove="Data\Migrations\20220817022452_ForeignKeys.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220818042112_ApplicationTable.cs" />
+    <Compile Remove="Data\Migrations\20220818042112_ApplicationTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220819000147_addedPropstoApplication.cs" />
+    <Compile Remove="Data\Migrations\20220819000147_addedPropstoApplication.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspose.Words" Version="22.8.0" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.24" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.24" />
@@ -30,8 +35,10 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="ViewModels\" />
     <Folder Include="wwwroot\Application\CV\" />
     <Folder Include="wwwroot\Application\Cover Letter\" />
+    <Folder Include="wwwroot\Application\Temp Preview\" />
   </ItemGroup>
 
 </Project>

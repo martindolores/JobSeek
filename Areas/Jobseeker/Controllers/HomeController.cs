@@ -125,38 +125,25 @@ namespace JobSeek.Controllers
 
         //GET Apply Action Method
         public IActionResult Apply(int? id)
-        {
-            var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory)
-                .FirstOrDefault(c => c.Id == id);
-            var userId = _userManager.GetUserId(HttpContext.User);
-            List<JobseekerUser> jobseekers = _db.JobseekerUser.ToList();
+        {   
+            Application application = new Application();
+
+            var jobSeekerId = _userManager.GetUserId(HttpContext.User);
+            application.JobseekerId = jobSeekerId;
+            application.JobOfferId = id;
             
-            if (userId != null)
-            {
-                foreach (var jobseeker in jobseekers)
-                {
-                    if (jobseeker.Id == userId)
-                    {
-                        ViewBag.JobseekerId = jobseeker.Id;
-                        ViewBag.FirstName = jobseeker.FirstName;
-                        ViewBag.LastName = jobseeker.LastName;
-                        ViewBag.Email = jobseeker.Email;
-                        ViewBag.PhoneNumber = jobseeker.PhoneNumber;
-                    }
-                }
-            }
-            ViewBag.JobCat = jobOffer.JobCategory.JobCategories;
-            ViewBag.JobType = jobOffer.JobType.JobTypes;
-            ViewBag.TitleName = jobOffer.Title;
-            ViewBag.Company = jobOffer.CompanyName;
-            ViewBag.Wage = jobOffer.Wage;
-            ViewBag.Description = jobOffer.Description;
-            ViewBag.JobOfferId = jobOffer.Id;
-            if (id == null || jobOffer == null)
+
+            application.Jobseeker = application.GetJobseeker(application.JobseekerId, _db);
+            application.JobOffer = application.GetJobOffer(application.JobOfferId, _db);
+
+
+            application.RecruiterId = application.JobOffer.RecruiterId;
+            application.RecruiterUser = application.GetRecruiter(application.RecruiterId, _db);
+            if (id == null || application==null)
             {
                 return NotFound();
             }
-            return View();
+            return View(application);
         }
 
         //POST Apply Action Method
@@ -187,14 +174,25 @@ namespace JobSeek.Controllers
                     return RedirectToAction("Apply", new { id = application.JobOfferId });
                 }
                 string resumeFolder = "Application/CV/";
-                application.Resume = await UploadFile(resumeFolder, resume);
+                var resumePath = await UploadFile(resumeFolder, resume);
+                long resumeSize = new FileInfo(Path.Combine(_webHostEnvironment.WebRootPath, resumePath)).Length;
+                if (resumeSize < 2097152) //2Mb
+                {
+                    
+                    application.Resume = resumePath;
+                }
+                else
+                {
+                    TempData["resumeSize"] = $"{resume.FileName} is too big! Please choose smaller resume.";
+                    return RedirectToAction("Apply", new { id = application.JobOfferId });
+                }
+                
             }
             
 
             if (coverLetter != null)
             {
                 var coverLetterext = Path.GetExtension(coverLetter.FileName).ToLowerInvariant();
-
                 if (String.IsNullOrEmpty(coverLetterext) || !permittedExtensions.Contains(coverLetterext))
                 {
                     TempData["coverLetter"] = "Invalid Cover Letter File Type!";
@@ -202,14 +200,25 @@ namespace JobSeek.Controllers
                 }
 
                 string coverLetterFolder = "Application/Cover Letter/";
-                application.CoverLetter = await UploadFile(coverLetterFolder, coverLetter);
+                var coverLetterPath = await UploadFile(coverLetterFolder, coverLetter);
+                long coverLetterSize = new FileInfo(Path.Combine(_webHostEnvironment.WebRootPath, coverLetterPath)).Length;
+                if (coverLetterSize < 2097152) //2Mb
+                {
+                    application.CoverLetter = await UploadFile(coverLetterFolder, coverLetter);
+                }
+                else
+                {
+                    TempData["coverLetterSize"] = $"{coverLetter.FileName} is too big! Please choose smaller cover letter";
+                    return RedirectToAction("Apply", new { id = application.JobOfferId });
+                }
+                    
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any())
                 .Select(x => new { x.Key, x.Value.Errors })
                 .ToArray();
 
-            application.Id = RandomUniqueNumber();
+            application.Id = RandomUniqueString();
 
            
 
@@ -220,9 +229,7 @@ namespace JobSeek.Controllers
                 if (ModelState.IsValid)
                 {
                     _db.Application.Add(application);
-                    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Application ON;");
                     await _db.SaveChangesAsync();
-                    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Application OFF;");
                     transaction.Commit();
                     TempData["submitted"] = "Application has successfully submitted!";
                     return RedirectToAction(actionName: nameof(Index));
@@ -246,10 +253,9 @@ namespace JobSeek.Controllers
             return folderPath;
         }
 
-        private int RandomUniqueNumber()
+        private string RandomUniqueString()
         {
-            Random rnd = new Random();
-            int uniqueId = rnd.Next();
+            var uniqueId = Guid.NewGuid().ToString();
             var existingApplication = _db.Application.FirstOrDefault(c => c.Id == uniqueId);
             if (existingApplication == null)
             {
@@ -257,7 +263,7 @@ namespace JobSeek.Controllers
             }
             else
             {
-                return uniqueId += RandomUniqueNumber();
+                return uniqueId += RandomUniqueString();
             }
 
             

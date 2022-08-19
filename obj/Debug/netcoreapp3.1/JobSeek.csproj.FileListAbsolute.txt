@@ -238,3 +238,12 @@ D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Role\Delete.
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Jobseeker\Views\User\Create.cshtml.g.cs
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Jobseeker\Views\Home\Apply.cshtml.g.cs
 D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Recruiter\Views\Candidates\Index.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ApplicationPartial.cshtml.g.cs
+D:\Projects\JobSeek\obj\Debug\netcoreapp3.1\Razor\Areas\Recruiter\Views\Candidates\Details.cshtml.g.cs
+D:\Projects\JobSeek\bin\Debug\netcoreapp3.1\Aspose.Words.Pdf2Word.dll
+D:\Projects\JobSeek\bin\Debug\netcoreapp3.1\Aspose.Words.dll
+D:\Projects\JobSeek\bin\Debug\netcoreapp3.1\SkiaSharp.dll
+D:\Projects\JobSeek\bin\Debug\netcoreapp3.1\runtimes\osx\native\libSkiaSharp.dylib
+D:\Projects\JobSeek\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\libSkiaSharp.dll
+D:\Projects\JobSeek\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\libSkiaSharp.dll
+D:\Projects\JobSeek\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\libSkiaSharp.dll

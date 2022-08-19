@@ -21,25 +21,33 @@ namespace JobSeek.Data.Migrations
 
             modelBuilder.Entity("JobSeek.Models.Application", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CoverLetter")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("JobOfferId")
+                    b.Property<int?>("JobOfferId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("JobseekerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RecruiterId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Resume")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JobOfferId");
+
+                    b.HasIndex("JobseekerId");
+
+                    b.HasIndex("RecruiterId");
 
                     b.ToTable("Application");
                 });
@@ -363,6 +371,25 @@ namespace JobSeek.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("RecruiterUser");
+                });
+
+            modelBuilder.Entity("JobSeek.Models.Application", b =>
+                {
+                    b.HasOne("JobSeek.Models.JobOffer", "JobOffer")
+                        .WithMany()
+                        .HasForeignKey("JobOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JobSeek.Models.JobseekerUser", "Jobseeker")
+                        .WithMany()
+                        .HasForeignKey("JobseekerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JobSeek.Models.RecruiterUser", "RecruiterUser")
+                        .WithMany()
+                        .HasForeignKey("RecruiterId");
                 });
 
             modelBuilder.Entity("JobSeek.Models.JobOffer", b =>
