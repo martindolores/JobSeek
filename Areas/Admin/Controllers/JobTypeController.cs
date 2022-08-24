@@ -4,22 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using JobSeek.Data;
 using JobSeek.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobSeek.Areas.Recruiter.Controllers
 {
-    [Area("Recruiter")]
-    public class JobCategoryController : Controller
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
+    public class JobTypeController : Controller
     {
         private ApplicationDbContext _db;
-
-        public JobCategoryController(ApplicationDbContext db)
+        
+        public JobTypeController(ApplicationDbContext db)
         {
             _db = db;
         }
         public IActionResult Index()
         {
-            return View(_db.JobCategories.ToList());  
+            return View(_db.JobTypes.ToList());
         }
 
         //GET Create Action Method
@@ -31,57 +34,57 @@ namespace JobSeek.Areas.Recruiter.Controllers
         //POST Create Action Method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(JobCategory jobCategory)
+        public async Task<IActionResult> Create(JobType jobType)
         {
             if (ModelState.IsValid)
             {
-                _db.JobCategories.Add(jobCategory);
+                _db.JobTypes.Add(jobType);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(actionName: nameof(Index));
             }
-            return View(jobCategory);
+            return View(jobType);
         }
 
         //GET Edit Action Method
         public IActionResult Edit(int? id)
         {
-            var jobCategory = _db.JobCategories.Find(id);
-            if (id == null || jobCategory == null)
+            var jobType = _db.JobTypes.Find(id);
+            if (id == null || jobType == null)
             {
                 return NotFound();
             }
-            return View(jobCategory);
+            return View(jobType);
         }
 
         //POST Edit Action Method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(JobCategory jobCategory)
+        public async Task<IActionResult> Edit(JobType jobType)
         {
             if (ModelState.IsValid)
             {
-                _db.JobCategories.Update(jobCategory);
+                _db.JobTypes.Update(jobType);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(actionName: nameof(Index));
             }
-            return View(jobCategory);
+            return View(jobType);
         }
 
         //GET Details Action Method
         public IActionResult Details(int? id)
         {
-            var jobCategory = _db.JobCategories.Find(id);
-            if (id == null || jobCategory == null)
+            var jobType = _db.JobTypes.Find(id);
+            if (id == null || jobType == null)
             {
                 return NotFound();
             }
-            return View(jobCategory);
+            return View(jobType);
         }
 
         //POST Details Action Method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Details(JobCategory jobCategory)
+        public IActionResult Details(JobType jobType)
         {
             return RedirectToAction(actionName: nameof(Index));
         }
@@ -89,27 +92,26 @@ namespace JobSeek.Areas.Recruiter.Controllers
         //GET Delete Action Method
         public IActionResult Delete(int? id)
         {
-            var jobCategory = _db.JobCategories.Find(id);
-            if (id == null || jobCategory == null)
+            var jobType = _db.JobTypes.Find(id);
+            if (id == null || jobType == null)
             {
                 return NotFound();
             }
-            return View(jobCategory);
+            return View(jobType);
         }
 
         //POST Delete Action Method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(JobCategory jobCategory)
+        public async Task<IActionResult> Delete(JobType jobType)
         {
             if (ModelState.IsValid)
             {
-                _db.JobCategories.Remove(jobCategory);
+                _db.JobTypes.Remove(jobType);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(actionName: nameof(Index));
             }
-            return View(jobCategory);
-            
+            return View(jobType);
         }
     }
 }

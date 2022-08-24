@@ -31,9 +31,9 @@ namespace JobSeek
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            services.AddAuthentication();
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddMvc(options => options.EnableEndpointRouting = false);

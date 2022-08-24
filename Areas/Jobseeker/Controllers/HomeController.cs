@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JobSeek.Data;
 using JobSeek.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -57,10 +58,7 @@ namespace JobSeek.Controllers
         {
             var jobListings = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory).ToList();
             List<JobOffer> searchListing = new List<JobOffer>();
-            if (!String.IsNullOrEmpty(jobTitle))
-            {
-                jobTitle.ToLower();
-            }
+
             if (!String.IsNullOrEmpty(jobTitle) && !String.IsNullOrEmpty(jobLoc))
             {
                 int? postCode = Int32.Parse(jobLoc);
@@ -68,8 +66,9 @@ namespace JobSeek.Controllers
                 {
                     foreach (var job in jobListings)
                     {
+                        var searchJob = jobTitle.ToLower();
                         var jobSearch = job.Title.ToLower();
-                        if (jobSearch.Contains(jobTitle) && job.PostalCode == jobLoc)
+                        if (jobSearch.Contains(searchJob) && job.PostalCode == jobLoc)
                         {
                             searchListing.Add(job);
                         }
@@ -80,10 +79,11 @@ namespace JobSeek.Controllers
             }
             else if (!String.IsNullOrEmpty(jobTitle) && String.IsNullOrEmpty(jobLoc))
             {
+                var searchJob = jobTitle.ToLower();
                 foreach (var job in jobListings)
                 {
                     var jobSearch = job.Title.ToLower();
-                    if (jobSearch.Contains(jobTitle))
+                    if (jobSearch.Contains(searchJob))
                     {
                         searchListing.Add(job);
                     }
@@ -124,6 +124,7 @@ namespace JobSeek.Controllers
         }
 
         //GET Apply Action Method
+        [Authorize(Roles ="Jobseeker")]
         public IActionResult Apply(int? id)
         {   
             Application application = new Application();
@@ -149,6 +150,7 @@ namespace JobSeek.Controllers
         //POST Apply Action Method
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Jobseeker")]
         public async Task<IActionResult> Apply(Application application, IFormFile resume, IFormFile coverLetter)
         {
             string[] permittedExtensions = { ".txt", ".pdf", ".doc", ".docx" };

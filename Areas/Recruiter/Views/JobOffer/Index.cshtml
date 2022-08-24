@@ -8,7 +8,7 @@
 <br />
 <div class="row">
     <div class="col-6">
-        <h2 class="text-dark">Job Type List</h2>
+        <h2 class="text-dark">Job Offer List</h2>
     </div>
     <div class="col-6 text-right">
         <a asp-action="Create" class="btn btn-outline-dark"><i class="fa-solid fa-plus"></i>&nbsp; Job Product Type</a>
@@ -16,7 +16,7 @@
 </div>
 <br />
 <div>
-    <table class="table table-striped border">
+    <table class="table table-striped border d-none d-md-block d-lg-block d-xl-block">
         <tr class="table-secondary">
             <th>
                 @Html.DisplayNameFor(expression: c => c.Title)
@@ -57,4 +57,24 @@
                 }
             }
         </table>
-    </div>
+</div>
+<div class="d-block d-sm-block d-md-none">
+        @foreach (var item in Model)
+        {
+            <br />
+            <div class="card text-center">
+                <div class="card-header">
+                    @item.Author
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text"><i class="fa-solid fa-dollar-sign"></i>@item.Wage</p>
+                    <partial name="_JobOfferButtonPartial" model="@item.Id" />
+                </div>
+                <div class="card-footer text-muted">
+                    @item.CompanyName 
+                </div>
+            </div>
+            <br />
+        }
+</div>

@@ -28,7 +28,7 @@
                     <a class="navbar-brand text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-glasses"></i> JobSeek</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                        <span class="navbar-toggler-icon text-dark"><i class="fa-solid fa-bars"></i></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                         <partial name="_LoginPartial" />
@@ -39,21 +39,24 @@
                             @if (userRole == "Recruiter")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Recruiter" asp-controller="JobType" asp-action="Index">Job Type</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Recruiter" asp-controller="JobCategory" asp-action="Index">Job Categories</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="Recruiter" asp-controller="JobOffer" asp-action="Index">Job Offers</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="Recruiter" asp-controller="Candidates" asp-action="Index">Candidates</a>
                                 </li>
                             }
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Role" asp-action="Index">Roles</a>
-                            </li>
+                            @if (userRole == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="JobType" asp-action="Index">Job Type</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="JobCategory" asp-action="Index">Job Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Role" asp-action="Index">Roles</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>

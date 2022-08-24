@@ -12,8 +12,8 @@ namespace JobSeek.Areas.Jobseeker.Controllers
     [Area("Jobseeker")]
     public class UserController : Controller
     {
-        ApplicationDbContext _db;
-        UserManager<IdentityUser> _userManager;
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
 
         public UserController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {

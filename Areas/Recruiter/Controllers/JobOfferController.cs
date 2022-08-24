@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using JobSeek.Data;
 using JobSeek.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 namespace JobSeek.Areas.Recruiter.Controllers
 {
     [Area("Recruiter")]
+    [Authorize(Roles = "Recruiter")]
     public class JobOfferController : Controller
     {
         ApplicationDbContext _db;
@@ -102,10 +104,12 @@ namespace JobSeek.Areas.Recruiter.Controllers
             ViewData["jobCategoryId"] = new SelectList(_db.JobCategories.ToList(), "Id", "JobCategories");
             string date = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.DateNow = date;
-            if (id == null || jobOffer == null)
+
+            if ((id == null || jobOffer == null) || jobOffer.RecruiterId != userId)
             {
                 return NotFound();
             }
+
             return View(jobOffer);
         }
 
@@ -140,10 +144,12 @@ namespace JobSeek.Areas.Recruiter.Controllers
             var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory)
                 .FirstOrDefault(c => c.Id == id);
             var submissionDate = jobOffer.Submitted.ToString("dd/MM/yyyy");
+            var userId = _userManager.GetUserId(HttpContext.User);
+
             ViewBag.JobCat = jobOffer.JobCategory.JobCategories;
             ViewBag.JobType = jobOffer.JobType.JobTypes;
             ViewBag.subDate = submissionDate;
-            if (id == null || jobOffer == null)
+            if ((id == null || jobOffer == null) || jobOffer.RecruiterId != userId)
             {
                 return NotFound();
             }
@@ -156,10 +162,12 @@ namespace JobSeek.Areas.Recruiter.Controllers
             var jobOffer = _db.JobOffer.Include(c => c.JobType).Include(c => c.JobCategory)
                 .FirstOrDefault(c => c.Id == id);
             var submissionDate = jobOffer.Submitted.ToString("dd/MM/yyyy");
+            var userId = _userManager.GetUserId(HttpContext.User);
+
             ViewBag.subDate = submissionDate;
             ViewBag.JobCat = jobOffer.JobCategory.JobCategories;
             ViewBag.JobType = jobOffer.JobType.JobTypes;
-            if (id == null || jobOffer == null)
+            if ((id == null || jobOffer == null) || jobOffer.RecruiterId != userId)
             {
                 return NotFound();
             }

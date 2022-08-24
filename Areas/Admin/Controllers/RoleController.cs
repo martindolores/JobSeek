@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JobSeek.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace JobSeek.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
@@ -40,8 +42,10 @@ namespace JobSeek.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string name)
         {
-            IdentityRole role = new IdentityRole();
-            role.Name = name;
+            IdentityRole role = new IdentityRole
+            {
+                Name = name
+            };
             var isExist = await _roleManager.RoleExistsAsync(role.Name);
             if (isExist)
             {
